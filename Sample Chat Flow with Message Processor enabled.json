@@ -1,0 +1,221 @@
+{
+  "Version": "2019-10-30",
+  "StartAction": "9bb9b83a-5b83-4d76-81c8-6a0889b166a8",
+  "Metadata": {
+    "entryPointPosition": {
+      "x": 40,
+      "y": 40
+    },
+    "ActionMetadata": {
+      "ca0527a2-47d9-4dd5-927f-a2edcecd8948": {
+        "position": {
+          "x": 1681.6,
+          "y": 12
+        }
+      },
+      "22648d2c-3f3e-4f04-ace4-2cf4f5ea0c55": {
+        "position": {
+          "x": 1056.8,
+          "y": 31.2
+        },
+        "parameters": {
+          "EventHooks": {
+            "CustomerQueue": {
+              "displayName": "AgentTraining-QueueFlow"
+            }
+          }
+        },
+        "contactFlow": {
+          "text": "AgentTraining-QueueFlow",
+          "id": "arn:aws:connect:us-east-1:727999390294:instance/d73c489f-edf6-48a4-9abd-e22c505f95fd/contact-flow/7c57976d-8e8c-4dc5-b103-de939316c4e0"
+        },
+        "customerOrAgent": true
+      },
+      "9bb9b83a-5b83-4d76-81c8-6a0889b166a8": {
+        "position": {
+          "x": 156,
+          "y": 38.4
+        }
+      },
+      "49beb139-3b66-4b5d-81ec-e065d61f1baa": {
+        "position": {
+          "x": 2052,
+          "y": 15.2
+        }
+      },
+      "0d443283-d26d-4c0f-bd3e-216cb8d67fb6": {
+        "position": {
+          "x": 1367.2,
+          "y": 23.2
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "BasicQueue"
+          }
+        },
+        "queue": {
+          "text": "BasicQueue"
+        }
+      },
+      "0413aecf-84fe-494e-a01e-34fd12245ad0": {
+        "position": {
+          "x": 812.8,
+          "y": 30.4
+        }
+      },
+      "41910aec-d8a6-4319-bda3-fca34ab7de5d": {
+        "position": {
+          "x": 440.8,
+          "y": 20
+        },
+        "parameters": {
+          "ChatProcessor": {
+            "LambdaProcessorARN": {
+              "displayName": "ChatIntercept-translator"
+            }
+          }
+        }
+      },
+      "ac02814a-519c-45bc-bff5-5b67831aae3d": {
+        "position": {
+          "x": 1736.8,
+          "y": 413.6
+        }
+      }
+    },
+    "Annotations": [],
+    "name": "Sample Chat Flow with Message Processor enabled",
+    "description": "",
+    "type": "contactFlow",
+    "status": "published",
+    "hash": {}
+  },
+  "Actions": [
+    {
+      "Parameters": {},
+      "Identifier": "ca0527a2-47d9-4dd5-927f-a2edcecd8948",
+      "Type": "TransferContactToQueue",
+      "Transitions": {
+        "NextAction": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+        "Errors": [
+          {
+            "NextAction": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "EventHooks": {
+          "CustomerQueue": "arn:aws:connect:us-east-1:727999390294:instance/d73c489f-edf6-48a4-9abd-e22c505f95fd/contact-flow/7c57976d-8e8c-4dc5-b103-de939316c4e0"
+        }
+      },
+      "Identifier": "22648d2c-3f3e-4f04-ace4-2cf4f5ea0c55",
+      "Type": "UpdateContactEventHooks",
+      "Transitions": {
+        "NextAction": "0d443283-d26d-4c0f-bd3e-216cb8d67fb6",
+        "Errors": [
+          {
+            "NextAction": "0d443283-d26d-4c0f-bd3e-216cb8d67fb6",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "FlowLoggingBehavior": "Enabled"
+      },
+      "Identifier": "9bb9b83a-5b83-4d76-81c8-6a0889b166a8",
+      "Type": "UpdateFlowLoggingBehavior",
+      "Transitions": {
+        "NextAction": "41910aec-d8a6-4319-bda3-fca34ab7de5d"
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+      "Type": "DisconnectParticipant",
+      "Transitions": {}
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:727999390294:instance/d73c489f-edf6-48a4-9abd-e22c505f95fd/queue/24ec8c3a-b9ed-4fd7-a584-13ecee85cfc0"
+      },
+      "Identifier": "0d443283-d26d-4c0f-bd3e-216cb8d67fb6",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "ca0527a2-47d9-4dd5-927f-a2edcecd8948",
+        "Errors": [
+          {
+            "NextAction": "ac02814a-519c-45bc-bff5-5b67831aae3d",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "Hello Please wait while I connect you to an agent."
+      },
+      "Identifier": "0413aecf-84fe-494e-a01e-34fd12245ad0",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "22648d2c-3f3e-4f04-ace4-2cf4f5ea0c55",
+        "Errors": [
+          {
+            "NextAction": "ac02814a-519c-45bc-bff5-5b67831aae3d",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "ChatProcessor": {
+          "ProcessingEnabled": "True",
+          "LambdaProcessorARN": "arn:aws:lambda:us-east-1:727999390294:function:ChatIntercept-translator",
+          "ChatProcessorSettings": {
+            "DeliverUnprocessedMessages": "False"
+          }
+        }
+      },
+      "Identifier": "41910aec-d8a6-4319-bda3-fca34ab7de5d",
+      "Type": "UpdateContactMediaProcessing",
+      "Transitions": {
+        "NextAction": "0413aecf-84fe-494e-a01e-34fd12245ad0",
+        "Errors": [
+          {
+            "NextAction": "ac02814a-519c-45bc-bff5-5b67831aae3d",
+            "ErrorType": "NoMatchingError"
+          },
+          {
+            "NextAction": "ac02814a-519c-45bc-bff5-5b67831aae3d",
+            "ErrorType": "ChannelMismatch"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "Ran into an error. Please check your cloudwacth logs for details."
+      },
+      "Identifier": "ac02814a-519c-45bc-bff5-5b67831aae3d",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+        "Errors": [
+          {
+            "NextAction": "49beb139-3b66-4b5d-81ec-e065d61f1baa",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    }
+  ]
+}
